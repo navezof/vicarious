@@ -1,3 +1,4 @@
+import type { ECS } from "./ecs";
 import type { GameObject } from "./type";
 
 /**
@@ -32,5 +33,5 @@ export abstract class System {
    * code, so they need to be able to create, mutate, and destroy
    * Entities and Components.
    */
-  public ecs: ECS;
+  public ecs!: ECS;
 }
