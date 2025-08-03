@@ -4,7 +4,7 @@
  *
  * Components have no API to fulfill.
  */
-export abstract class Component {}
+export abstract class GameComponent {}
 
 /**
  * This type is so functions like the ComponentContainer's get(...) will
@@ -12,7 +12,7 @@ export abstract class Component {}
  * other words, we can say get(Position) and TypeScript will know that an
  * instance of Position was returned. This is amazingly helpful.
  */
-export type ComponentClass<T extends Component = Component> = new (
+export type GameComponentClass<T extends GameComponent = GameComponent> = new (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ...args: any[]
 ) => T;

@@ -1,5 +1,5 @@
-import type { Component } from "./component";
-import { ComponentContainer } from "./componentContainer";
+import type { GameComponent } from "./gameComponent";
+import { GameComponentContainer } from "./gameComponentContainer";
 import type { System } from "./system";
 import type { GameObject } from "./type";
 
@@ -11,7 +11,7 @@ import type { GameObject } from "./type";
  */
 export class ECS {
   // Main state
-  private gameObjects = new Map<GameObject, ComponentContainer>();
+  private gameObjects = new Map<GameObject, GameComponentContainer>();
   private systems = new Map<System, Set<GameObject>>();
 
   // Bookkeeping for gameObjects
@@ -21,7 +21,7 @@ export class ECS {
   // API: GameObjects
   public addGameObject(): GameObject {
     const gameObject = this.nextGameObjectID++;
-    this.gameObjects.set(gameObject, new ComponentContainer());
+    this.gameObjects.set(gameObject, new GameComponentContainer());
     return gameObject;
   }
 
@@ -30,13 +30,15 @@ export class ECS {
   }
 
   // API: Components
-  public addComponent(gameObject: GameObject, component: Component): void {
+  public addComponent(gameObject: GameObject, component: GameComponent): void {
     this.gameObjects.get(gameObject)?.add(component);
     // TODO: WHY?
     this.checkGO(gameObject);
   }
 
-  public getComponents(gameObject: GameObject): ComponentContainer | undefined {
+  public getComponents(
+    gameObject: GameObject
+  ): GameComponentContainer | undefined {
     return this.gameObjects.get(gameObject);
   }
 
@@ -55,7 +57,7 @@ export class ECS {
     // Components list, or they'll run on every entity. Simply remove
     // or special case this check if you do want a System that runs
     // on everything.
-    if (system.componentsRequired.size === 0) {
+    if (system.gameComponentsRequired.size === 0) {
       console.warn(`System: ${system} not added: empty Component List`);
     }
     // Give system a reference to the ECS so it can actually do anything.
@@ -107,7 +109,7 @@ export class ECS {
     const have = this.gameObjects.get(gameObject);
 
     // On recupère les composent requis (donc des Functions=type de composant)
-    const need = system.componentsRequired;
+    const need = system.gameComponentsRequired;
     if (have?.hasAll(need)) {
       // should be in system
       this.systems.get(system)?.add(gameObject);

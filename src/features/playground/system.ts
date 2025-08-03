@@ -21,12 +21,12 @@ export abstract class System {
    *
    * This should be defined at compile time and should never change.
    */
-  public abstract componentsRequired: Set<Function>;
+  public abstract gameComponentsRequired: Set<Function>;
 
   /**
    * update() is called on the System every frame.
    */
-  public abstract update(entities: Set<GameObject>): void;
+  public abstract update(gameObjects: Set<GameObject>): void;
 
   /**
    * The ECS is given to all Systems. Systems contain most of the game

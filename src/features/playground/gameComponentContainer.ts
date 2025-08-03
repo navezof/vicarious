@@ -1,4 +1,4 @@
-import type { Component, ComponentClass } from "./component";
+import type { GameComponent, GameComponentClass } from "./gameComponent";
 
 /**
  * This custom container is so that calling code can provide the
@@ -19,33 +19,33 @@ import type { Component, ComponentClass } from "./component";
  * Entities! We'll fix this later by only returning callers a view onto
  * the Components that can't change them.
  */
-export class ComponentContainer {
-  private map = new Map<Function, Component>();
+export class GameComponentContainer {
+  private map = new Map<Function, GameComponent>();
 
-  public add(component: Component): void {
+  public add(gameComponent: GameComponent): void {
     // The first is the instance of the component, the second the component type.
     // Still unclear of the why we would need that
-    this.map.set(component.constructor, component);
+    this.map.set(gameComponent.constructor, gameComponent);
   }
 
-  public get<T extends Component>(componentClass: ComponentClass<T>): T {
-    return this.map.get(componentClass) as T;
+  public get<T extends GameComponent>(scriptClass: GameComponentClass<T>): T {
+    return this.map.get(scriptClass) as T;
   }
 
-  public has(componentClass: Function): boolean {
-    return this.map.has(componentClass);
+  public has(gameComponentClass: Function): boolean {
+    return this.map.has(gameComponentClass);
   }
 
-  public hasAll(componenClasses: Iterable<Function>): boolean {
-    for (const componentClass of componenClasses) {
-      if (!this.has(componentClass)) {
+  public hasAll(gameComponentClasses: Iterable<Function>): boolean {
+    for (const scriptClass of gameComponentClasses) {
+      if (!this.has(scriptClass)) {
         return false;
       }
     }
     return true;
   }
 
-  public delete(componentClass: Function): void {
-    this.map.delete(componentClass);
+  public delete(gameComponentClass: Function): void {
+    this.map.delete(gameComponentClass);
   }
 }
